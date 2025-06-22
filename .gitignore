@@ -2,7 +2,7 @@
 __pycache__/
 db.sqlite3
 
-ml_workings/
+# ml_workings/
 *.log
 staticfiles/
 venv/

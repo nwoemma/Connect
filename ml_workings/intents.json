@@ -1,0 +1,53 @@
+{
+  "intents": [
+    {
+      "tag": "general_help",
+      "patterns": [
+        "How do i reset my password?",
+        "What is the app for?",
+        "Help me to solve the problem",
+        "I'm having trouble using the app",
+        "Can you assist me?",
+        "I need help with something",
+        "Im hungry"
+      ],
+      "responses": [
+        "To reset your password, just tap on 'Forgot Password' at the login screen.",
+        "This app is built to help you solve problems",
+        "Great! I'm happy to help. Please tell me what the problem is.",
+        "No worries! I'm here to guide you through it. What do you need help with?",
+        "You can use this app to submit feedback and access important services.",
+        "Go and grab a snack"
+      ]
+    },
+    {
+      "tag": "greeting",
+      "patterns": [
+        "Hi",
+        "Hello",
+        "How are you doing today",
+        "Good morning",
+        "Good afternoon"
+      ],
+      "responses": [
+        "Hi there! How can I assist you?",
+        "Hello! I'm here to help you.",
+        "I'm doing well, thank you! How can I assist you today?"
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": [
+        "Goodbye",
+        "Bye",
+        "See you later",
+        "Talk to you later"
+      ],
+      "responses": [
+        "Goodbye! Have a great day!",
+        "Talk to you soon!",
+        "Bye! Let me know if you need anything else."
+      ]
+    }
+  ]
+}
