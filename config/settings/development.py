@@ -10,6 +10,10 @@ DATABASE = {
     }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "accounts",
     "chats",
     'rest_framework',
+    'drf_spectacular',
     'rest_framework.authtoken',
 ]
 
