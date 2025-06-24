@@ -191,11 +191,12 @@ def get_chat_history(request):
     } for chat in chat_history]
 
     return Response(data, status=status.HTTP_200_OK)
-
+@api_view(['GET'])
 def get_chat_session(request):
-    if not request.user.is_authenticated:
-        return Response({
-            "error": "Authentication required"
-        }, status=status.HTTP_401_UNAUTHORIZED)
-    session_data = ChatHistory.objects.filter(user=request.user).order_by('-timestamp').values('id', 'title', 'timestamp')
+    user_id = request.query_params.get("user_id")
+#     if not request.user.is_authenticated:
+#         return Response({
+#             "error": "Authentication required"
+#         }, status=status.HTTP_401_UNAUTHORIZED)
+    session_data = ChatHistory.objects.filter(user=user_id).order_by('-timestamp').values('id', 'title','user_input', 'timestamp')
     return Response(session_data, status=status.HTTP_200_OK)
