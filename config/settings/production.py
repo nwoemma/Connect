@@ -4,7 +4,7 @@ import dj_database_url
 
 ALLOWED_HOSTS = ["www.ewapp.com", "ewapp.com","connect-cp0f.onrender.com"]
 
-DATABASE = {
+DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL'),
         conn_max_age=600,
