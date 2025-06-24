@@ -4,5 +4,5 @@ db.sqlite3
 
 # ml_workings/
 *.log
-staticfiles/
+# staticfiles/
 venv/
