@@ -133,7 +133,7 @@ def ai_chat_response(request):
     try:
         x_input = vectorizer.transform([user_input])
         prediction_index = model.predict(x_input)[0]
-        print("PREDICTION:", prediction_index)
+        print(f"PREDICTION:{prediction_index}")
 
         predicted_label = encoder.inverse_transform([prediction_index])[0]
 
@@ -177,10 +177,12 @@ def ai_chat_feedback(request):
         return Response({'error': 'Chat not found'}, status=status.HTTP_404_NOT_FOUND)
 @api_view(['GET'])
 def get_chat_history(request):
-    # if not request.user.is_authenticated:
-    #     return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
-
-    chat_history = ChatHistory.objects.filter(user=request.user).order_by('-timestamp')
+    if not request.user.is_authenticated:
+        return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+    user_id = request.query_params.get("user_id")
+    if not user_id:
+        return Response({"error": "user_id is required"}, status=400)
+    chat_history = ChatHistory.objects.filter(user=user_id).order_by('-timestamp')
     data = [{
         "user_input": chat.user_input,
         "ai_response": chat.ai_response,

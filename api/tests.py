@@ -11,7 +11,7 @@ class TestCase_for_connect(TestCase):
     #         'email':'nwosuemmanuel159@gmail.com',
     #         'password':'password123',
     #     }
-    # def test_chat_response(self):
+    def test_chat_response(self):
         # Send pickled data as expected by your view
         data = {'messages': 'Hello'}
         pickled_data = pickle.dumps(data)
