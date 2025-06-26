@@ -103,8 +103,8 @@ def signup(request):
 @api_view(['POST'])
 def login_user(request):
     print("RAW LOGIN DATA:", request.data)
-    email = request.POST.get('email').strip()
-    password= request.POST.get('password').strip()
+    email = request.POST.get('email','').strip()
+    password= request.POST.get('password', '').strip()
     
     if not email or not password:
         print("📧 EMAIL VALUE:", repr(request.data.get('email')))
