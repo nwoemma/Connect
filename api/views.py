@@ -104,7 +104,7 @@ def signup(request):
 def login_user(request):
     print("RAW LOGIN DATA:", request.data)
     email = request.data.get('email','').strip()
-    password= request.data.get('password', '').strip()
+    password= make_password(request.data.get('password', '').strip())
     
     if not email or not password:
         print("📧 EMAIL VALUE:", repr(request.data.get('email')))
@@ -114,7 +114,7 @@ def login_user(request):
         user = User.objects.get(email=email)
     except User.DoesNotExist:
         return Response({'messages': 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
-    user = authenticate(request, email=email, password=password)
+    user = authenticate(request, email=user.email, password=password)
     if user:
         if user.is_active:
             if user.status == 'del':
