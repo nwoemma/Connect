@@ -34,6 +34,7 @@ def generate_chat_title(user_input):
     return user_input[:50] + "..." if len(user_input) > 50 else user_input
 @api_view(['POST'])
 def signup(request):
+    print("RAW REQUEST DATA:", request.data)
     full_name = request.data.get('full_name', '').strip()
     if not full_name:
         return Response({'messages': 'Full name is required'}, status=status.HTTP_400_BAD_REQUEST)
