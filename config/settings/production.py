@@ -7,7 +7,7 @@ ALLOWED_HOSTS = ["www.ewapp.com","127.0.0.1", "ewapp.com","connect-d9z6.onrender
 
 DATABASES = {
     'default': dj_database_url.config(
-        default="postgresql://ewapp_user:nBXo6rooo5tchGzGSWiDzza5p35wDh7v@dpg-d1dhr7idbo4c73du05e0-a.frankfurt-postgres.render.com:5432/ewapp_db",
+        default="postgresql://ewapp_user:KPSFZBsnL5Xrq8XquTcR1BQJ4zxFFbTo@dpg-d1e8as3e5dus73b50bgg-a.frankfurt-postgres.render.com/ewapp_db_e9ed",
         conn_max_age=600,
         ssl_require=True
     )
