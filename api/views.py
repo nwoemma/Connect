@@ -35,7 +35,7 @@ def generate_chat_title(user_input):
 @api_view(['POST'])
 def signup(request):
     print("🔍 RAW REQUEST DATA:", request.data)
-
+    print("📦 DATABASE_URL:", os.environ.get("DATABASE_URL"))
     full_name = request.data.get('full_name', '').strip()
     if not full_name:
         print("❌ Full name is missing")
