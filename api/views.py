@@ -34,15 +34,22 @@ def generate_chat_title(user_input):
     return user_input[:50] + "..." if len(user_input) > 50 else user_input
 @api_view(['POST'])
 def signup(request):
-    print("RAW REQUEST DATA:", request.data)
+    print("🔍 RAW REQUEST DATA:", request.data)
+
     full_name = request.data.get('full_name', '').strip()
     if not full_name:
+        print("❌ Full name is missing")
         return Response({'messages': 'Full name is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Split full_name into first and last
     names = full_name.split(' ', 1) if ' ' in full_name else (full_name, '')
     first_name = names[0]
     last_name = names[1] if len(names) > 1 else ''
-    
-    user = UserSerializer(data={
+    print("✅ First Name:", first_name)
+    print("✅ Last Name:", last_name)
+
+    # Prepare user data
+    user_data = {
         'username': generate_username(first_name, last_name),
         'email': request.data.get('email'),
         'first_name': first_name,
@@ -51,32 +58,46 @@ def signup(request):
         'role': request.data.get('role'),
         'password': make_password(request.data.get('password')),
         'profile_pic': request.FILES.get('profile_pic'),
-    })
+    }
+
+    print("📦 User data prepared for serializer:", user_data)
+
+    user = UserSerializer(data=user_data)
+
     if user.is_valid():
+        print("✅ Serializer is valid")
         try:
             user = user.save()
-            token =Token.objects.create(user=user)
+            print("✅ User saved to DB:", user)
+            token = Token.objects.create(user=user)
+            print("🔑 Token created:", token.key)
+
             json = UserSerializer(user).data
             json['token'] = token.key
+
+            context = {
+                'email': json['email'],
+                'username': json['username'],
+                'first_name': json['first_name'],
+                'last_name': json['last_name'],
+                'phone_num': json['phone_num'],
+                'token': json['token']
+            }
+
+            messages = "Account created successfully, please check your email for verification"
+            print("🎉 Signup successful")
+            return Response({'messages': messages, 'token': token.key}, status=status.HTTP_201_CREATED)
+
         except Exception as e:
-            print("ERROR SAVING USER:", str(e))
-            return Response({'messages': 'Registration failed, please try again'}, status=status.HTTP_400_BAD_REQUEST)    
-        context = {
-        'email': json['email'],
-        'username': json['username'],
-        'first_name': json['first_name'],
-        'last_name': json['last_name'],
-        'phone_num': json['phone_num'],
-        'token': json['token']
-        }  
-        messages = "Account created successfully, please check your email for verification"                            
-        return Response({'messages':messages, 'token':token.key },status=status.HTTP_201_CREATED)
+            print("❌ ERROR SAVING USER:", str(e))
+            return Response({'messages': 'Registration failed, internal error occurred'}, status=500)
+
     else:
-        context = {
-            'messages':"Registration failed, please try again",
-            'errors': user.errors   
-        }
-        return Response(context, status=status.HTTP_400_BAD_REQUEST)
+        print("❌ Serializer errors:", user.errors)
+        return Response({
+            'messages': "Registration failed, please try again",
+            'errors': user.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
