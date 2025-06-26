@@ -102,6 +102,7 @@ def signup(request):
 
 @api_view(['POST'])
 def login_user(request):
+    print("RAW LOGIN DATA:", request.data)
     email = request.POST.get('email')
     password= request.POST.get('password')
     
