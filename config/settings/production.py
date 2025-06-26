@@ -2,8 +2,8 @@ from .base import *
 import os
 import dj_database_url
 
-DEBUG = False
-ALLOWED_HOSTS = ["www.ewapp.com", "ewapp.com","connect-d9z6.onrender.com",]
+DEBUG = True
+ALLOWED_HOSTS = ["www.ewapp.com","127.0.0.1", "ewapp.com","connect-d9z6.onrender.com",]
 
 DATABASES = {
     'default': dj_database_url.config(
