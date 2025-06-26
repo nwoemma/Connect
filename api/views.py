@@ -53,11 +53,14 @@ def signup(request):
         'profile_pic': request.FILES.get('profile_pic'),
     })
     if user.is_valid():
-        user = user.save()
-        token =Token.objects.create(user=user)
-        json = UserSerializer(user).data
-        json['token'] = token.key
-        
+        try:
+            user = user.save()
+            token =Token.objects.create(user=user)
+            json = UserSerializer(user).data
+            json['token'] = token.key
+        except Exception as e:
+            print("ERROR SAVING USER:", str(e))
+            return Response({'messages': 'Registration failed, please try again'}, status=status.HTTP_400_BAD_REQUEST)    
         context = {
         'email': json['email'],
         'username': json['username'],
