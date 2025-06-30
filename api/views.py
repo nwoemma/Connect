@@ -108,6 +108,7 @@ def activate_user(request):
     try:
         user = User.objects.get(email=email)
         user.is_active = True
+        user.status = '1'
         user.save()
         return Response({'message': f"{email} is now active"}, status=200)
     except User.DoesNotExist:
