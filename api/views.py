@@ -99,7 +99,19 @@ def signup(request):
             'messages': "Registration failed, please try again",
             'errors': user.errors
         }, status=status.HTTP_400_BAD_REQUEST)
-
+@api_view(['POST'])
+def activate_user(request):
+    email = request.data.get('email')
+    if not email:
+        return Response({'message': 'Email is required'}, status=400)
+    
+    try:
+        user = User.objects.get(email=email)
+        user.is_active = True
+        user.save()
+        return Response({'message': f"{email} is now active"}, status=200)
+    except User.DoesNotExist:
+        return Response({'message': 'User not found'}, status=404)
 
 @api_view(['POST'])
 def login_user(request):
