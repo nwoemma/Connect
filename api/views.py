@@ -215,7 +215,10 @@ def ai_chat_feedback(request):
             is_helpful=is_helpful,
             comment=comment
         )
-        return Response({'message': 'Feedback submitted successfully'}, status=status.HTTP_201_CREATED)
+        serializer = ChatHistorySerializer(chat)
+        chat.title = generate_chat_title(chat.user_input)
+        chat.save()
+        return Response(serializer.data,{'message': 'Feedback submitted successfully'}, status=status.HTTP_201_CREATED)
     except ChatHistory.DoesNotExist:
         return Response({'error': 'Chat not found'}, status=status.HTTP_404_NOT_FOUND)
 @api_view(['GET'])
@@ -243,3 +246,25 @@ def get_chat_session(request):
 #         }, status=status.HTTP_401_UNAUTHORIZED)
     session_data = ChatHistory.objects.filter(user=user_id).order_by('-timestamp').values('id', 'title','user_input', 'timestamp')
     return Response(session_data, status=status.HTTP_200_OK)
+@api_view(["GET"])
+def user_profile(request):
+    if not request.user.is_active:
+        return Response({"error": "User is not active"}, status=status.HTTP_403_FORBIDDEN)  
+    user = request.user
+    user_data = UserSerializer(user).data
+    return Response(user_data, status=status.HTTP_200_OK)   
+
+@api_view(["PUT"])
+def update_user_profile(request):
+    if not request.user.is_authenticated:
+        return Response({"error": "Authentication required"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+    user = request.user
+    serializer = UserSerializer(user, data=request.data, partial=True)
+    
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
