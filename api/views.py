@@ -112,6 +112,8 @@ def login_user(request):
         return Response({'messages': 'Email and password are required'}, status=status.HTTP_400_BAD_REQUEST)
     try:
         user_email = User.objects.get(email=email)
+        if not user_email.password:
+            return Response({'messages': 'Password not set for this account'}, status=status.HTTP_400_BAD_REQUEST)
     except User.DoesNotExist:
         return Response({'messages': 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
     user = authenticate(request, email=email, password=password)
