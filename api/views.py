@@ -56,7 +56,6 @@ def signup(request):
         'last_name': last_name,
         'phone_num': request.data.get('phone_num'),
         'role': request.data.get('role'),
-        'password': make_password(request.data.get('password')),
         'profile_pic': request.FILES.get('profile_pic'),
     }
 
@@ -69,6 +68,8 @@ def signup(request):
         try:
             user = user.save()
             print("✅ User saved to DB:", user)
+            user.set_password(request.data.get('password'))
+            user.save()
             token = Token.objects.create(user=user)
             print("🔑 Token created:", token.key)
 
